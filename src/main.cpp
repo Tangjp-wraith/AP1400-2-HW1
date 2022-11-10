@@ -9,8 +9,11 @@ int main(int argc, char **argv)
     {
         // debug section
         Matrix matrix{{-1, 1.5, -1.75, -2}, {-2, 2.5, -2.75, -3}, {3, 3.5, -3.75, -4}, {4, 4.5, 4.75, -5}};
-        double ans=algebra::determinant(matrix);
-        std::cout<<ans<<std::endl;
+        algebra::show(matrix);
+        std::cout<<'\n';
+        Matrix inverse{algebra::inverse(matrix)};
+        std::cout<<'\n';
+        algebra::show(inverse);
     }
     else
     {

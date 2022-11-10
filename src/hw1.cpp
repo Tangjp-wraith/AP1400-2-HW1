@@ -22,7 +22,7 @@ Matrix random(size_t n,size_t m,double min,double max){
     }
     default_random_engine e;
     uniform_real_distribution<double> u(min, max);
-    Matrix result{algebra::zeros(n,m)};
+    Matrix result{zeros(n,m)};
     for(size_t row=0;row<n;row++){
         for(size_t col=0;col<m;col++){
             result[row][col]=u(e);
@@ -64,7 +64,7 @@ Matrix multiply(const Matrix& matrix1, const Matrix& matrix2){
     }
     size_t _row=matrix1.size(),_col=matrix2[0].size();
     size_t _tmp=matrix2.size();
-    Matrix answer{algebra::zeros(_row,_col)};
+    Matrix answer{zeros(_row,_col)};
     for(size_t row=0;row<_row;row++){
         for(size_t col=0;col<_col;col++){
             for(size_t tmp=0;tmp<_tmp;tmp++){
@@ -93,7 +93,7 @@ Matrix sum(const Matrix& matrix1, const Matrix& matrix2){
         throw std::logic_error("matrices with wrong dimensions cannot be multiplied");
     }
     size_t _row=matrix1.size(),_col=matrix1[0].size();
-    Matrix answer{algebra::zeros(_row,_col)};
+    Matrix answer{zeros(_row,_col)};
     for(size_t row=0;row<_row;row++){
         for(size_t col=0;col<_col;col++){
             answer[row][col]=matrix1[row][col]+matrix2[row][col];
@@ -107,7 +107,7 @@ Matrix transpose(const Matrix& matrix){
         return Matrix{};
     }
     size_t _row=matrix.size(),_col=matrix[0].size();
-    Matrix answer{algebra::zeros(_col,_row)};
+    Matrix answer{zeros(_col,_row)};
     for(size_t row=0;row<_row;row++){
         for(size_t col=0;col<_col;col++){
             answer[col][row]=matrix[row][col];
@@ -118,7 +118,7 @@ Matrix transpose(const Matrix& matrix){
 
 Matrix minor(const Matrix& matrix, size_t n, size_t m){
     size_t _row=matrix.size(),_col=matrix[0].size();
-    Matrix answer{algebra::zeros(_col-1,_row-1)};
+    Matrix answer{zeros(_col-1,_row-1)};
     for(size_t row=0;row<_row;row++){
         for(size_t col=0;col<_col;col++){
             if(row==n||col==m){
@@ -156,6 +156,26 @@ double determinant(const Matrix& matrix){
 }
 
 Matrix inverse(const Matrix& matrix){
+    if(!matrix.size()){
+        return Matrix{};
+    }
+    if(matrix.size()!=matrix[0].size()){
+        throw std::logic_error("non-square matrices have no inverse");
+    }
+    if(determinant(matrix)==0){
+        throw std::logic_error("singular matrices have no inverse");
+    }
+    size_t n=matrix.size();
+    Matrix adj_A{zeros(n,n)};
+    for(size_t row=0;row<n;row++){
+        for(size_t col=0;col<n;col++){
+            adj_A[row][col]=((row+col)%2?(-1):1)*determinant(minor(matrix,col,row));
+        }
+    }
+    return multiply(adj_A,1.0/determinant(matrix));
+}
+
+Matrix concatenate(const Matrix& matrix1, const Matrix& matrix2, int axis=0){
     
 }
 

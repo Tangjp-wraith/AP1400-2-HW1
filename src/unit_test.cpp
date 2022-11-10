@@ -213,36 +213,36 @@ TEST(HW1Test, DETERMINANT2) {
     EXPECT_DOUBLE_EQ(algebra::determinant(matrix), 0);
 }
 
-// TEST(HW1Test, INVERSE1) {
-//     // Caution: inverse of an empty matrix
-//     EXPECT_TRUE(algebra::inverse(Matrix{}).empty());
+TEST(HW1Test, INVERSE1) {
+    // Caution: inverse of an empty matrix
+    EXPECT_TRUE(algebra::inverse(Matrix{}).empty());
 
-//     // Caution: non-square matrices have no inverse
-//     EXPECT_THROW(algebra::inverse(Matrix{{1, 2, 3}, {40, 5, -6}}), std::logic_error);
+    // Caution: non-square matrices have no inverse
+    EXPECT_THROW(algebra::inverse(Matrix{{1, 2, 3}, {40, 5, -6}}), std::logic_error);
 
-//     // Caution: singular matrices have no inverse
-//     Matrix non_singular_matrix{{1, 1.5, -1.75, 2}, {2, 2.5, -2.75, 3}, {3, 3.5, -3.75, 4}, {4, 4.5, 4.75, 5}};
-//     EXPECT_THROW(algebra::inverse(non_singular_matrix), std::logic_error);
+    // Caution: singular matrices have no inverse
+    Matrix non_singular_matrix{{1, 1.5, -1.75, 2}, {2, 2.5, -2.75, 3}, {3, 3.5, -3.75, 4}, {4, 4.5, 4.75, 5}};
+    EXPECT_THROW(algebra::inverse(non_singular_matrix), std::logic_error);
 
-//     // test case
-//     Matrix matrix{{-1, 1.5, -1.75, -2}, {-2, 2.5, -2.75, -3}, {3, 3.5, -3.75, -4}, {4, 4.5, 4.75, -5}};
-//     Matrix inverse{algebra::inverse(matrix)};
-//     EXPECT_NEAR(inverse[0][0], 0.16, 0.03);
-//     EXPECT_NEAR(inverse[1][1], 3.31, 0.03);
-//     EXPECT_NEAR(inverse[3][1], 2.67, 0.03);
-//     EXPECT_NEAR(inverse[0][3], 0, 0.03);
-// }
+    // test case
+    Matrix matrix{{-1, 1.5, -1.75, -2}, {-2, 2.5, -2.75, -3}, {3, 3.5, -3.75, -4}, {4, 4.5, 4.75, -5}};
+    Matrix inverse{algebra::inverse(matrix)};
+    EXPECT_NEAR(inverse[0][0], 0.16, 0.03);
+    EXPECT_NEAR(inverse[1][1], 3.31, 0.03);
+    EXPECT_NEAR(inverse[3][1], 2.67, 0.03);
+    EXPECT_NEAR(inverse[0][3], 0, 0.03);
+}
 
 
-// TEST(HW1Test, INVERSE2) {
-//     // test case
-//     Matrix matrix{{-12, 1.5, -1.75, -2}, {-2, 2.5, -2.75, -3}, {25, 3.5, -3.75, -4}, {4, 4.5, 4.75, -51}};
-//     Matrix inverse{algebra::inverse(matrix)};
-//     EXPECT_NEAR(inverse[0][0], 0.05, 0.03);
-//     EXPECT_NEAR(inverse[1][1], 18.07, 0.03);
-//     EXPECT_NEAR(inverse[3][1], 2.80, 0.03);
-//     EXPECT_NEAR(inverse[0][3], 0, 0.03);
-// }
+TEST(HW1Test, INVERSE2) {
+    // test case
+    Matrix matrix{{-12, 1.5, -1.75, -2}, {-2, 2.5, -2.75, -3}, {25, 3.5, -3.75, -4}, {4, 4.5, 4.75, -51}};
+    Matrix inverse{algebra::inverse(matrix)};
+    EXPECT_NEAR(inverse[0][0], 0.05, 0.03);
+    EXPECT_NEAR(inverse[1][1], 18.07, 0.03);
+    EXPECT_NEAR(inverse[3][1], 2.80, 0.03);
+    EXPECT_NEAR(inverse[0][3], 0, 0.03);
+}
 
 // TEST(HW1Test, CONCATENATE1) {
 //     // Caution: matrices with wrong dimensions cannot be concatenated

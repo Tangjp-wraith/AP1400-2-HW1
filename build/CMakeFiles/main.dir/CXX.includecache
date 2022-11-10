@@ -10,16 +10,6 @@
 vector
 -
 
-/usr/src/app/src/hw1.cpp
-hw1.h
-/usr/src/app/src/hw1.h
-iomanip
--
-random
--
-iostream
--
-
 /usr/src/app/src/main.cpp
 iostream
 -

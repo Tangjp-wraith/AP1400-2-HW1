@@ -244,46 +244,46 @@ TEST(HW1Test, INVERSE2) {
     EXPECT_NEAR(inverse[0][3], 0, 0.03);
 }
 
-// TEST(HW1Test, CONCATENATE1) {
-//     // Caution: matrices with wrong dimensions cannot be concatenated
-//     EXPECT_THROW(algebra::concatenate(Matrix{{1, 2}}, Matrix{{1, 2, 3}, {4, 5, 6}}, 0), std::logic_error);
+TEST(HW1Test, CONCATENATE1) {
+    // Caution: matrices with wrong dimensions cannot be concatenated
+    EXPECT_THROW(algebra::concatenate(Matrix{{1, 2}}, Matrix{{1, 2, 3}, {4, 5, 6}}, 0), std::logic_error);
 
-//     // test case
-//     Matrix matrix1{algebra::random(2, 3, 0, 1)};
-//     Matrix matrix2{algebra::random(4, 3, 0, 1)};
-//     Matrix matrix{algebra::concatenate(matrix1, matrix2, 0)};
+    // test case
+    Matrix matrix1{algebra::random(2, 3, 0, 1)};
+    Matrix matrix2{algebra::random(4, 3, 0, 1)};
+    Matrix matrix{algebra::concatenate(matrix1, matrix2, 0)};
 
-//     // check the size of the matrix
-//     EXPECT_EQ(matrix.size(), 6);
-//     EXPECT_EQ(matrix[0].size(), 3);
+    // check the size of the matrix
+    EXPECT_EQ(matrix.size(), 6);
+    EXPECT_EQ(matrix[0].size(), 3);
 
-//     // check the value of the elements
-//     EXPECT_DOUBLE_EQ(matrix[0][0], matrix1[0][0]);
-//     EXPECT_DOUBLE_EQ(matrix[1][2], matrix1[1][2]);
-//     EXPECT_DOUBLE_EQ(matrix[2][0], matrix2[0][0]);
-//     EXPECT_DOUBLE_EQ(matrix[5][2], matrix2[3][2]);
+    // check the value of the elements
+    EXPECT_DOUBLE_EQ(matrix[0][0], matrix1[0][0]);
+    EXPECT_DOUBLE_EQ(matrix[1][2], matrix1[1][2]);
+    EXPECT_DOUBLE_EQ(matrix[2][0], matrix2[0][0]);
+    EXPECT_DOUBLE_EQ(matrix[5][2], matrix2[3][2]);
 
-// }
+}
 
-// TEST(HW1Test, CONCATENATE2) {
-//     // Caution: matrices with wrong dimensions cannot be concatenated
-//     EXPECT_THROW(algebra::concatenate(Matrix{{1, 2}}, Matrix{{1, 2, 3}, {4, 5, 6}}, 1), std::logic_error);
+TEST(HW1Test, CONCATENATE2) {
+    // Caution: matrices with wrong dimensions cannot be concatenated
+    EXPECT_THROW(algebra::concatenate(Matrix{{1, 2}}, Matrix{{1, 2, 3}, {4, 5, 6}}, 1), std::logic_error);
 
-//     // test case
-//     Matrix matrix1{algebra::random(2, 3, 0, 1)};
-//     Matrix matrix2{algebra::random(2, 1, 0, 1)};
-//     Matrix matrix{algebra::concatenate(matrix1, matrix2, 1)};
+    // test case
+    Matrix matrix1{algebra::random(2, 3, 0, 1)};
+    Matrix matrix2{algebra::random(2, 1, 0, 1)};
+    Matrix matrix{algebra::concatenate(matrix1, matrix2, 1)};
 
-//     // check the size of the matrix
-//     EXPECT_EQ(matrix.size(), 2);
-//     EXPECT_EQ(matrix[0].size(), 4);
+    // check the size of the matrix
+    EXPECT_EQ(matrix.size(), 2);
+    EXPECT_EQ(matrix[0].size(), 4);
 
-//     // check the value of the elements
-//     EXPECT_DOUBLE_EQ(matrix[0][0], matrix1[0][0]);
-//     EXPECT_DOUBLE_EQ(matrix[1][2], matrix1[1][2]);
-//     EXPECT_DOUBLE_EQ(matrix[0][3], matrix2[0][0]);
-//     EXPECT_DOUBLE_EQ(matrix[1][3], matrix2[1][0]);
-// }
+    // check the value of the elements
+    EXPECT_DOUBLE_EQ(matrix[0][0], matrix1[0][0]);
+    EXPECT_DOUBLE_EQ(matrix[1][2], matrix1[1][2]);
+    EXPECT_DOUBLE_EQ(matrix[0][3], matrix2[0][0]);
+    EXPECT_DOUBLE_EQ(matrix[1][3], matrix2[1][0]);
+}
 
 // TEST(HW1Test, ERO_SWAP) {
 //     // Caution: r1 or r2 inputs are out of range

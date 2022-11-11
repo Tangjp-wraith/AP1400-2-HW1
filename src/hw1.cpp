@@ -4,25 +4,25 @@
 #include<iostream>
 using namespace std;
 
-namespace algebra{
 
-Matrix zeros(size_t n, size_t m){
+
+Matrix algebra::zeros(size_t n, size_t m){
     Matrix result(n,vector<double>(m,0));
     return result;
 }
 
-Matrix ones(size_t n,size_t m){
+Matrix algebra::ones(size_t n,size_t m){
     Matrix result(n,vector<double>(m,1));
     return result;
 }
 
-Matrix random(size_t n,size_t m,double min,double max){
+Matrix algebra::random(size_t n,size_t m,double min,double max){
     if(min>max){
         throw std::logic_error("the min is larger than max.");
     }
     default_random_engine e;
     uniform_real_distribution<double> u(min, max);
-    Matrix result{zeros(n,m)};
+    Matrix result{algebra::zeros(n,m)};
     for(size_t row=0;row<n;row++){
         for(size_t col=0;col<m;col++){
             result[row][col]=u(e);
@@ -31,7 +31,7 @@ Matrix random(size_t n,size_t m,double min,double max){
     return result;
 }
 
-void show(const Matrix& matrix){
+void algebra::show(const Matrix& matrix){
     if(!matrix.size()){
         return ;
     }
@@ -45,7 +45,7 @@ void show(const Matrix& matrix){
     }
 }
 
-Matrix multiply(const Matrix& matrix,double c){
+Matrix algebra::multiply(const Matrix& matrix,double c){
     Matrix result=matrix;
     for(auto &vec:result){
         for(auto &num:vec){
@@ -55,7 +55,7 @@ Matrix multiply(const Matrix& matrix,double c){
     return result;
 }
 
-Matrix multiply(const Matrix& matrix1, const Matrix& matrix2){
+Matrix algebra::multiply(const Matrix& matrix1, const Matrix& matrix2){
     if(!matrix1.size()||!matrix2.size()){
         return Matrix{};
     }
@@ -64,7 +64,7 @@ Matrix multiply(const Matrix& matrix1, const Matrix& matrix2){
     }
     size_t _row=matrix1.size(),_col=matrix2[0].size();
     size_t _tmp=matrix2.size();
-    Matrix answer{zeros(_row,_col)};
+    Matrix answer{algebra::zeros(_row,_col)};
     for(size_t row=0;row<_row;row++){
         for(size_t col=0;col<_col;col++){
             for(size_t tmp=0;tmp<_tmp;tmp++){
@@ -75,7 +75,7 @@ Matrix multiply(const Matrix& matrix1, const Matrix& matrix2){
     return answer;
 }
 
-Matrix sum(const Matrix& matrix, double c){
+Matrix algebra::sum(const Matrix& matrix, double c){
     Matrix answer=matrix;
     for(auto &vec:answer){
         for(auto &num:vec){
@@ -85,7 +85,7 @@ Matrix sum(const Matrix& matrix, double c){
     return answer;
 }
 
-Matrix sum(const Matrix& matrix1, const Matrix& matrix2){
+Matrix algebra::sum(const Matrix& matrix1, const Matrix& matrix2){
     if(!matrix1.size()&&!matrix2.size()){
         return Matrix{};
     }
@@ -93,7 +93,7 @@ Matrix sum(const Matrix& matrix1, const Matrix& matrix2){
         throw std::logic_error("matrices with wrong dimensions cannot be multiplied");
     }
     size_t _row=matrix1.size(),_col=matrix1[0].size();
-    Matrix answer{zeros(_row,_col)};
+    Matrix answer{algebra::zeros(_row,_col)};
     for(size_t row=0;row<_row;row++){
         for(size_t col=0;col<_col;col++){
             answer[row][col]=matrix1[row][col]+matrix2[row][col];
@@ -102,12 +102,12 @@ Matrix sum(const Matrix& matrix1, const Matrix& matrix2){
     return answer;
 }
 
-Matrix transpose(const Matrix& matrix){
+Matrix algebra::transpose(const Matrix& matrix){
     if(!matrix.size()){
         return Matrix{};
     }
     size_t _row=matrix.size(),_col=matrix[0].size();
-    Matrix answer{zeros(_col,_row)};
+    Matrix answer{algebra::zeros(_col,_row)};
     for(size_t row=0;row<_row;row++){
         for(size_t col=0;col<_col;col++){
             answer[col][row]=matrix[row][col];
@@ -116,9 +116,9 @@ Matrix transpose(const Matrix& matrix){
     return answer;
 }
 
-Matrix minor(const Matrix& matrix, size_t n, size_t m){
+Matrix algebra::minor(const Matrix& matrix, size_t n, size_t m){
     size_t _row=matrix.size(),_col=matrix[0].size();
-    Matrix answer{zeros(_col-1,_row-1)};
+    Matrix answer{algebra::zeros(_col-1,_row-1)};
     for(size_t row=0;row<_row;row++){
         for(size_t col=0;col<_col;col++){
             if(row==n||col==m){
@@ -130,7 +130,7 @@ Matrix minor(const Matrix& matrix, size_t n, size_t m){
     return answer;
 }
 
-double determinant(const Matrix& matrix){
+double algebra::determinant(const Matrix& matrix){
     if(!matrix.size()){
         return 1.0;
     }
@@ -146,37 +146,69 @@ double determinant(const Matrix& matrix){
     }
     vector<Matrix>  M;
     for(size_t col=0;col<n;col++){
-        M.push_back(minor(matrix,0,col));
+        M.push_back(algebra::minor(matrix,0,col));
     }
     double answer=0;
     for(size_t col=0;col<n;col++){
-        answer+=matrix[0][col]*determinant(M[col])*(col%2?(-1):1);
+        answer+=matrix[0][col]*algebra::determinant(M[col])*(col%2?(-1):1);
     }
     return answer;
 }
 
-Matrix inverse(const Matrix& matrix){
+Matrix algebra::inverse(const Matrix& matrix){
     if(!matrix.size()){
         return Matrix{};
     }
     if(matrix.size()!=matrix[0].size()){
         throw std::logic_error("non-square matrices have no inverse");
     }
-    if(determinant(matrix)==0){
+    if(algebra::determinant(matrix)==0){
         throw std::logic_error("singular matrices have no inverse");
     }
     size_t n=matrix.size();
-    Matrix adj_A{zeros(n,n)};
+    Matrix adj_A{algebra::zeros(n,n)};
     for(size_t row=0;row<n;row++){
         for(size_t col=0;col<n;col++){
-            adj_A[row][col]=((row+col)%2?(-1):1)*determinant(minor(matrix,col,row));
+            adj_A[row][col]=((row+col)%2?(-1):1)*algebra::determinant(minor(matrix,col,row));
         }
     }
-    return multiply(adj_A,1.0/determinant(matrix));
+    return algebra::multiply(adj_A,1.0/algebra::determinant(matrix));
 }
 
-Matrix concatenate(const Matrix& matrix1, const Matrix& matrix2, int axis=0){
+Matrix algebra::concatenate(const Matrix& matrix1, const Matrix& matrix2, int axis=0){
+    if(!matrix1.size()&&!matrix2.size()){
+        return Matrix{};
+    }
+    if((!matrix1.size()&&matrix2.size())||(matrix1.size()&&!matrix2.size())){
+        throw std::logic_error("matrices with wrong dimensions cannot be concatenated");
+    }
+    size_t _row1=matrix1.size(),_col1=matrix1[0].size();
+    size_t _row2=matrix2.size(),_col2=matrix2[0].size();
+    if(!axis){
+        if(_col1!=_col2){
+            throw std::logic_error("matrices with wrong dimensions cannot be concatenated");
+        }
+         Matrix answer{algebra::zeros(_row1+_row2,_col1)};
+         for(size_t row=0;row<(_row1+_row2);row++){
+            for(size_t col=0;col<_col1;col++){
+                answer[row][col]=(row<_row1)?matrix1[row][col]:matrix2[row-_row1][col];
+            }
+         }
+         return answer;
+    }else{
+        if(_row1!=_row2){
+            throw std::logic_error("matrices with wrong dimensions cannot be concatenated");
+        }
+         Matrix answer{algebra::zeros(_row1,_col1+_col2)};
+         for(size_t row=0;row<_row1;row++){
+            for(size_t col=0;col<(_col1+_col2);col++){
+                answer[row][col]=(col<_col1)?matrix1[row][col]:matrix2[row][col-_col1];
+            }
+         }
+         return answer;
+    }
+}
+
+Matrix algebra::ero_swap(const Matrix& matrix, size_t r1, size_t r2){
     
-}
-
 }

@@ -210,5 +210,59 @@ Matrix algebra::concatenate(const Matrix& matrix1, const Matrix& matrix2, int ax
 }
 
 Matrix algebra::ero_swap(const Matrix& matrix, size_t r1, size_t r2){
-    
+    if(matrix.size()<=r1||matrix.size()<=r2){
+        throw std::logic_error("r1 or r2 inputs are out of range");
+    }
+    Matrix answer=matrix;
+    for(size_t col=0;col<matrix[0].size();col++){
+        answer[r1][col]=matrix[r2][col];
+        answer[r2][col]=matrix[r1][col];
+    }
+    return answer;
+}
+
+Matrix algebra::ero_multiply(const Matrix& matrix, size_t r, double c){
+    if(matrix.size()<=r){
+        throw std::logic_error("r inputs are out of range");
+    }
+    Matrix answer=matrix;
+    for(size_t col=0;col<matrix[0].size();col++){
+        answer[r][col]=matrix[r][col]*c;
+    }
+    return answer;
+}
+
+Matrix algebra::ero_sum(const Matrix& matrix, size_t r1, double c, size_t r2){
+    if(matrix.size()<=r1||matrix.size()<=r2){
+        throw std::logic_error("r1 or r2 inputs are out of range");
+    }
+    Matrix answer=matrix;
+    for(size_t col=0;col<matrix[0].size();col++){
+        answer[r2][col]+=matrix[r1][col]*c;
+    }
+    return answer;
+}
+
+Matrix algebra::upper_triangular(const Matrix& matrix){
+    if(matrix.size()<=1){
+        return matrix;
+    }   
+    if(matrix.size()!=matrix[0].size()){
+        throw std::logic_error("non-square matrices have no upper triangular form");
+    }
+    size_t _row=matrix.size();
+    Matrix answer=matrix;
+    size_t col=0,temp=1;
+    for(size_t row=0;row<_row-1;row++){
+        while(!answer[row][col]){
+            answer=ero_swap(answer,row,temp);
+            temp++;
+        }
+        temp=row+1;
+        for(size_t row1=row+1;row1<_row;row1++){
+            answer=ero_sum(answer,row,-answer[row1][col]/answer[row][col],row1);
+        }
+        col++;
+    }
+    return answer;
 }
